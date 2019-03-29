@@ -5,6 +5,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 public class Testi {
@@ -18,51 +19,81 @@ public class Testi {
 	
 	
 	
-	@BeforeMethod
-	public void beforeMethod() {
-		driver = new ChromeDriver();
-		booking = new MainPageofBooking(driver);
+	public Testi()
+	{
+		
+			driver = new ChromeDriver();
+			booking = new MainPageofBooking(driver);
+		
+		
 	}
 
-	@Test
-	public void test1() {
+
+	@Given("^I am on a page with url \"([^\"]*)\"$")
+	public void test0() {
 		driver.manage().window().maximize();
 		driver.get(URL);
+		
+	}
+		
+		
+		
+		
+	
+
+	
+	
+
+	@When("^I enter city and calendar \"([^\"]*)\" in search field$")
+	private void test1() {
 		booking.enterCity();
 		booking.calendar();
+		
+	}
+
+
+	@And("^I enter starting date and finish date$")
+	private void test2() {
+
 		booking.startingDate();
 		booking.finishDate();
-		booking.checking();
-        Assert.assertTrue(booking.getHotelList().size() > 0, "нет отелей ");
+		
 	}
 
-	@Test
-	public void test2() {
-		driver.manage().window().maximize();
-		driver.get(URL);
-		booking.enterCity();
-		booking.calendar();
-		booking.startingDate();
-		booking.finishDate(); 
+	
+	@And("^I check the dates$")
+	private void test3() {
 		booking.checking();
-	    booking.sortByRaiting();
+        Assert.assertTrue(booking.getHotelList().size() > 0, "нет отелей ");
+		
+	}
+
+
+	@And("^I check that there are any some hotels$")
+	private void test4() {
+		booking.checking();
+        Assert.assertTrue(booking.getHotelList().size() > 0, "нет отелей ");
+		
+	}
+	
+	
+	@Then("^I sort out by the rating  $")
+	private void test5() {
+		
+			booking.sortByRaiting();
+			driver.quit();
 		 try {
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		 booking.getHotelList().get(0).click();
-	
+			
+		
+		
 	}
 
 	
 	
 	
-	
-	@AfterMethod
-	public void afterMethod() {
-		driver.quit();
-
-	}
-
 }
